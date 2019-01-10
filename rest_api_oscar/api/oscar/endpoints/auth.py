@@ -2,7 +2,7 @@ import logging
 
 from flask import request, current_app
 from flask_restplus import Resource, fields
-from rest_api_oscar.lib.oscar_saml import OscarSaml 
+from rest_api_oscar.oscarlib.oscar_saml import OscarSaml 
 from rest_api_oscar.api.restplus import api
 import base64, json
 from flask import jsonify

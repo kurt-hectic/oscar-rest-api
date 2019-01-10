@@ -32,7 +32,6 @@ pytest==4.1.0
 pytz==2018.9
 PyYAML==3.13
 requests==2.21.0
--e git+https://github.com/kurt-hectic/oscar-rest-api.git@273204114e6e09d701d23b8e6699ee13f40597ae#egg=rest_api_oscar
 six==1.12.0
 soupsieve==1.6.2
 SQLAlchemy==1.1.13

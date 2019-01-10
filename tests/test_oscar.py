@@ -10,9 +10,6 @@ def client():
     oscar_app.app.config['TESTING'] = True
     client = oscar_app.app.test_client()
 
-    with oscar_app.app.app_context():
-        oscar_app.initialize_app(oscar_app.app)
-
     yield client
 
 def test_station_present(client):

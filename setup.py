@@ -24,7 +24,7 @@ setup(
 
     packages=find_packages(),
 
-    install_requires=['flask-restplus==0.12.1', 'Flask-SQLAlchemy==2.3.1'],
+    install_requires=['flask-restplus==0.12.1', 'Flask-SQLAlchemy==2.3.1',],
     
     setup_requires=[
         'pytest-runner',

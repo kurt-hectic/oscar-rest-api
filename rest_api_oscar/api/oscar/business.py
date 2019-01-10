@@ -1,5 +1,5 @@
 from rest_api_oscar.database.models import Station
-from rest_api_oscar.lib.oscarapi import OscarClient
+from rest_api_oscar.oscarlib.oscar_client import OscarClient
 from sqlalchemy.orm.exc import NoResultFound
 from flask import current_app
 
