@@ -1,5 +1,3 @@
-#from rest_api_demo.database import db
-
 from rest_api_oscar.database.models import Station
 from rest_api_oscar.lib.oscarapi import OscarClient
 from sqlalchemy.orm.exc import NoResultFound
