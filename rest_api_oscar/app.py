@@ -9,10 +9,10 @@ from rest_api_oscar.api.restplus import api
 
 app = Flask(__name__)
 
-app.logger.addHandler(logging.StreamHandler(sys.stdout))
-app.logger.setLevel(logging.INFO)
-#logging_conf_path = os.path.normpath(os.path.join(os.path.dirname(__file__), '../logging.conf'))
-#logging.config.fileConfig(logging_conf_path)
+#app.logger.addHandler(logging.StreamHandler(sys.stdout))
+#app.logger.setLevel(logging.INFO)
+logging_conf_path = os.path.normpath(os.path.join(os.path.dirname(__file__), '../logging.conf'))
+logging.config.fileConfig(logging_conf_path)
 log = logging.getLogger(__name__)
 
 @app.route("/")
@@ -20,7 +20,6 @@ def static_index():
     return send_from_directory("static", "index.html")
 
 def configure_app(flask_app):
-    print("config")
     log.info("configuring app")
 
     #flask_app.config['SERVER_NAME'] = settings.FLASK_SERVER_NAME
@@ -32,7 +31,6 @@ def configure_app(flask_app):
     flask_app.config['OSCAR_URL'] = settings.OSCAR_URL
     
 def initialize_app(flask_app):
-    print("init")
     log.info("initializing app")
     configure_app(flask_app)
 
