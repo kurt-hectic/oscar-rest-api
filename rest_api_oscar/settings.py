@@ -8,6 +8,6 @@ RESTPLUS_VALIDATE = True
 RESTPLUS_MASK_SWAGGER = False
 RESTPLUS_ERROR_404_HELP = False
 
-# SQLAlchemy settings
-SQLALCHEMY_DATABASE_URI = 'sqlite:///db.sqlite'
-SQLALCHEMY_TRACK_MODIFICATIONS = False
+# OSCAR settings
+OSCAR_URL = "http://oscardepl.wmo.int/surface"
+

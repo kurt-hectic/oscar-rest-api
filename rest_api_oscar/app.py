@@ -23,7 +23,7 @@ def configure_app(flask_app):
     flask_app.config['RESTPLUS_MASK_SWAGGER'] = settings.RESTPLUS_MASK_SWAGGER
     flask_app.config['ERROR_404_HELP'] = settings.RESTPLUS_ERROR_404_HELP
 
-    flask_app.config['OSCAR_URL'] = "http://oscardepl.wmo.int/surface"
+    flask_app.config['OSCAR_URL'] = settings.OSCAR_URL
     
 def initialize_app(flask_app):
     configure_app(flask_app)
