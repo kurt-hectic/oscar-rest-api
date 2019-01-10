@@ -1,8 +1,8 @@
 import logging
 
-from flask import request
+from flask import request, current_app
 from flask_restplus import Resource, fields
-from rest_api_oscar.lib.oscar_saml import performLogin,getUserCredentials
+from rest_api_oscar.lib.oscar_saml import OscarSaml 
 from rest_api_oscar.api.restplus import api
 import base64, json
 from flask import jsonify
@@ -32,8 +32,9 @@ class CredentialsOperation(Resource):
             qlack_token = session_info["token"]
             
             log.debug("obtained cookies: {} token: {}".format(cookies,qlack_token))
+            oscar_client = OscarSaml(oscarurl=current_app.config["OSCAR_URL"])
             
-            user_details = getUserCredentials(cookies,qlack_token)
+            user_details = oscar_client.getUserCredentials(cookies,qlack_token)
         
             if user_details:
                 return user_details, 200
@@ -51,7 +52,9 @@ class LoginOperation(Resource):
     @api.response(200, 'Login OK')
     def post(self):
         params = request.json
-        session_info =  performLogin(params["username"],params["password"]) 
+        oscar_client = OscarSaml(oscarurl=current_app.config["OSCAR_URL"])
+
+        session_info =  oscar_client.performLogin(params["username"],params["password"]) 
         log.info("session info")
         if session_info:
             token = base64.b64encode( json.dumps(session_info).encode()  ).decode()

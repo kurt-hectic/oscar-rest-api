@@ -1,15 +1,19 @@
 #from rest_api_demo.database import db
 
 from rest_api_oscar.database.models import Station
-from rest_api_oscar.lib.oscarapi import getFullStationJson, getInternalIDfromWigosId
+from rest_api_oscar.lib.oscarapi import OscarClient
 from sqlalchemy.orm.exc import NoResultFound
+from flask import current_app
+
+
 
 def get_all_stations():
     pass
     
 def get_station(id):
+    oscar_client = OscarClient(oscarurl=current_app.config["OSCAR_URL"])
     
-    station_info = getFullStationJson(id,basicOnly=True)
+    station_info = oscar_client.getFullStationJson(id,basicOnly=True)
 
     if station_info:
         return Station( id=station_info["id"] , name=station_info["name"], date_established = station_info["dateEstablished"] )

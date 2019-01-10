@@ -4,7 +4,7 @@ import pytest
 import tempfile
 import json
 
-@pytest.fixture
+@pytest.fixture(scope='module')
 def client():
     
     oscar_app.app.config['TESTING'] = True
@@ -15,8 +15,21 @@ def client():
 
     yield client
 
-def test_empty_(client):
-    """Start with a blank database."""
+def test_station_present(client):
+    """test if a station can be retrieved"""
 
-    rv = client.get('/api/stations/4618')
-    assert b'VLADIMIR' in rv.data
+    r = client.get('/api/stations/4618')
+    assert b'VLADIMIR' in r.data   
+    
+def test_login(client):
+    """test succesfull login into OSCAR"""
+    params = { 'username': 'tproescholdt@wmo.int' , 'password': 'Oscar4ever!' }
+    r = client.post('/api/auth/login' , json=params )
+    assert r.status_code == 200
+
+def test__failed_login(client):
+    """test unsuccesfull login into OSCAR"""
+    params = { 'username': 'tproescholdt@wmo.int' , 'password': 'Oscar4never!' }
+    r = client.post('/api/auth/login' , json=params )
+    assert r.status_code == 401
+
