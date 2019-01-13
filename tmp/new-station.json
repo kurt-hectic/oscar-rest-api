@@ -1,0 +1,56 @@
+{
+	"typeId": 1,
+	"locations": [{
+		"validSince": "2019-01-01",
+		"latitude": "10.0000",
+		"longitude": "20.0000",
+		"elevation": "123",
+		"usedLocations": null,
+		"geoposName": null
+	}],
+	"gawChildrenPrograms": 0,
+	"addingGawFirstTime": false,
+	"name": "TIMO TEST 1",
+	"dateEstablished": "2019-01-01",
+	"wmoRaId": "6",
+	"territories": [{
+		"validSince": "2019-01-01",
+		"territoryId": "2",
+		"usedTerritories": null,
+		"territoryName": "Albania"
+	}],
+	"timezones": [{
+		"timezoneId": 2,
+		"timezoneName": "UTC+1",
+		"validSince": "2019-01-01"
+	}],
+	"climateZones": [],
+	"surfaceCovers": [],
+	"populations": [],
+	"topographies": [],
+	"submitNewStation": true,
+	"wigosIds": [{
+		"wid": "0-20000-0-1234tt"
+	}],
+	"stationPrograms": [{
+		"programId": 303,
+		"program": "Non-affiliated",
+		"isNew": true
+	}],
+	"observations": [{
+		"programs": [{
+			"programId": 303,
+			"program": "Non-affiliated",
+			"isNew": true
+		}],
+		"variableId": 44,
+		"variableName": "Integrated air samples",
+		"geometryId": "1",
+		"geometryName": "Point",
+		"usedObservations": null,
+		"editObservation": false,
+		"editable": true,
+		"observationIsOpen": true,
+		"show": true
+	}]
+}

@@ -9,5 +9,5 @@ RESTPLUS_MASK_SWAGGER = False
 RESTPLUS_ERROR_404_HELP = False
 
 # OSCAR settings
-OSCAR_URL = "http://oscardepl.wmo.int/surface"
+OSCAR_URL = "https://oscardepl.wmo.int/surface"
 

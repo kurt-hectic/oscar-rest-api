@@ -6,8 +6,9 @@ from rest_api_oscar import settings
 from rest_api_oscar.api.oscar.endpoints.stations import ns as stations_namespace
 from rest_api_oscar.api.oscar.endpoints.auth import ns as auth_namespace
 from rest_api_oscar.api.restplus import api
+import rest_api_oscar.api.oscar.utils as tokenutils
 
-app = Flask(__name__)
+app = Flask(__name__ )
 
 #app.logger.addHandler(logging.StreamHandler(sys.stdout))
 #app.logger.setLevel(logging.INFO)
@@ -34,11 +35,37 @@ def initialize_app(flask_app):
     log.info("initializing app")
     configure_app(flask_app)
 
+    authorizations = {
+        'apikey': {
+            'type': 'apiKey',
+            'in': 'header',
+            'name': tokenutils.OSCAR_TOKEN
+    }
+   
+}    
     blueprint = Blueprint('api', __name__, url_prefix='/api')
     api.init_app(blueprint)
     api.add_namespace(stations_namespace)
+    api.authorizations=authorizations
+    #api.security = 'apikey'
     flask_app.register_blueprint(blueprint)
+
+    # populate codelists 
+    URL = flask_app.config['OSCAR_URL'] + '//rest/api/referenceData/list/{type}'
+    codelists = {}
+    for cl in ["StationTypeRef","WmoRaRef","TerritoryRef","TimezoneRef","ObservationGeometryRef","GeopositionRef"]:
+        url = (URL).format(type=cl)
+        codelists[cl] = tokenutils.read_reference_codelist(url)
+        
+    url =  flask_app.config['OSCAR_URL'] + "//rest/api/referenceData/program-tree?disableGawParents=true&disableGaw=true"
+    codelists["ProgramNetwork"] = tokenutils.read_reference_codelist(url)    
+
+    url =  flask_app.config['OSCAR_URL'] + "//rest/api/referenceData/variableTree"
+    codelists["Variable"] = tokenutils.read_reference_codelist(url)    
     
+    flask_app.config["codelists"] = codelists
+    log.debug("loaded ref codelists: {}".format(codelists))
+        
     
 def main():
     log.info('>>>>> Starting development server at http://{}/api/ <<<<<'.format(app.config['SERVER_NAME']))

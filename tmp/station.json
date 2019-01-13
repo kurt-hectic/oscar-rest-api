@@ -1,0 +1,194 @@
+{
+	"id": 1740,
+	"name": "LOVIISA ORRENGRUND",
+	"typeName": "Land (fixed)",
+	"typeId": 1,
+	"wmoRaName": "VI - Europe",
+	"wmoRaId": 6,
+	"lastModifiedOn": "2016-04-28",
+	"descriptions": [{
+		"id": 2648,
+		"description": "The station was originally registered based on WMO Pub 9 Vol A information containing these observation remarks: AUT (see code table A for explanations). These remarks imply the following additional observations that could not be registered automatically: none.\nTIMO EDIT XXX",
+		"validSince": "2016-04-28",
+		"usedDescriptions": null
+	}],
+	"organizations": [{
+		"id": 1885,
+		"organizationName": "FMI",
+		"organizationId": 91,
+		"validSince": "2016-04-28"
+	}],
+	"territories": [{
+		"id": 2962,
+		"territoryName": "Finland",
+		"territoryId": 69,
+		"validSince": "2016-04-28"
+	}],
+	"locations": [{
+		"id": 2959,
+		"latitude": "60.2750",
+		"longitude": "26.4444444444",
+		"elevation": 5,
+		"validSince": "2016-04-28"
+	}],
+	"imageFolderId": "b3a4039f-2c0c-4638-85ff-ab261e9eefdd",
+	"documentFolderId": "bfe47537-a72b-4172-96cc-43dc9dbb4919",
+	"stationPrograms": [{
+		"id": 6375,
+		"program": "GOS",
+		"programId": 4,
+		"approvalStatus": "Approved",
+		"programUrl": "https://www.wmo.int/pages/prog/www/OSY/GOS.html",
+		"stationProgramStatuses": [{
+			"id": "4007",
+			"declaredStatusId": 1,
+			"declaredStatusName": "Operational",
+			"calculatedStatusId": 1,
+			"calculatedStatusName": "Operational",
+			"memberSince": "2016-04-28"
+		}]
+	}],
+	"approvalStatus": "Approved",
+	"approvalStatusId": 1,
+	"wigosIds": [{
+		"id": 1832,
+		"wid": "0-20000-0-02992",
+		"primary": false
+	}],
+	"wmoIndex": {
+		
+	},
+	"gawChildrenPrograms": 0,
+	"submitNewStation": false,
+	"observations": [{
+		"id": 31307,
+		"variableName": "Air temperature (at specified distance from reference surface)",
+		"variableId": 224,
+		"geometryName": "Point",
+		"geometryId": 1,
+		"programs": [{
+			"id": 6375,
+			"program": "GOS",
+			"programId": 4,
+			"approvalStatus": "Approved",
+			"programUrl": "https://www.wmo.int/pages/prog/www/OSY/GOS.html",
+			"stationProgramStatuses": [{
+				"id": "4007",
+				"declaredStatusId": 1,
+				"declaredStatusName": "Operational",
+				"calculatedStatusId": 1,
+				"calculatedStatusName": "Operational",
+				"memberSince": "2016-04-28"
+			}]
+		}],
+		"stationId": 1740,
+		"lastModifiedOn": "2016-05-31",
+		"editable": true,
+		"show": true
+	},
+	{
+		"id": 31306,
+		"variableName": "Atmospheric pressure",
+		"variableId": 216,
+		"geometryName": "Point",
+		"geometryId": 1,
+		"programs": [{
+			"id": 6375,
+			"program": "GOS",
+			"programId": 4,
+			"approvalStatus": "Approved",
+			"programUrl": "https://www.wmo.int/pages/prog/www/OSY/GOS.html",
+			"stationProgramStatuses": [{
+				"id": "4007",
+				"declaredStatusId": 1,
+				"declaredStatusName": "Operational",
+				"calculatedStatusId": 1,
+				"calculatedStatusName": "Operational",
+				"memberSince": "2016-04-28"
+			}]
+		}],
+		"stationId": 1740,
+		"lastModifiedOn": "2016-05-31",
+		"editable": true,
+		"show": true
+	},
+	{
+		"id": 31309,
+		"variableName": "Humidity  (at specified distance from reference surface)",
+		"variableId": 251,
+		"geometryName": "Point",
+		"geometryId": 1,
+		"programs": [{
+			"id": 6375,
+			"program": "GOS",
+			"programId": 4,
+			"approvalStatus": "Approved",
+			"programUrl": "https://www.wmo.int/pages/prog/www/OSY/GOS.html",
+			"stationProgramStatuses": [{
+				"id": "4007",
+				"declaredStatusId": 1,
+				"declaredStatusName": "Operational",
+				"calculatedStatusId": 1,
+				"calculatedStatusName": "Operational",
+				"memberSince": "2016-04-28"
+			}]
+		}],
+		"stationId": 1740,
+		"lastModifiedOn": "2016-05-31",
+		"editable": true,
+		"show": true
+	},
+	{
+		"id": 31310,
+		"variableName": "Occurrence of precipitation during last period",
+		"variableId": 213,
+		"geometryName": "Point",
+		"geometryId": 1,
+		"programs": [{
+			"id": 6375,
+			"program": "GOS",
+			"programId": 4,
+			"approvalStatus": "Approved",
+			"programUrl": "https://www.wmo.int/pages/prog/www/OSY/GOS.html",
+			"stationProgramStatuses": [{
+				"id": "4007",
+				"declaredStatusId": 1,
+				"declaredStatusName": "Operational",
+				"calculatedStatusId": 1,
+				"calculatedStatusName": "Operational",
+				"memberSince": "2016-04-28"
+			}]
+		}],
+		"stationId": 1740,
+		"lastModifiedOn": "2016-05-31",
+		"editable": true,
+		"show": true
+	},
+	{
+		"id": 31308,
+		"variableName": "Wind (surface wind direction and speed, horizontal) - deprecated",
+		"variableId": 309,
+		"geometryName": "Point",
+		"geometryId": 1,
+		"programs": [{
+			"id": 6375,
+			"program": "GOS",
+			"programId": 4,
+			"approvalStatus": "Approved",
+			"programUrl": "https://www.wmo.int/pages/prog/www/OSY/GOS.html",
+			"stationProgramStatuses": [{
+				"id": "4007",
+				"declaredStatusId": 1,
+				"declaredStatusName": "Operational",
+				"calculatedStatusId": 1,
+				"calculatedStatusName": "Operational",
+				"memberSince": "2016-04-28"
+			}]
+		}],
+		"stationId": 1740,
+		"lastModifiedOn": "2016-05-31",
+		"editable": true,
+		"show": true
+	}],
+	"dateEstablished": "2019-01-03"
+}

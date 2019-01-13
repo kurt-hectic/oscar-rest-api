@@ -5,24 +5,34 @@ from jsonpath_ng import jsonpath
 from jsonpath_ng.ext import parse
 import logging
 
+STATION_EDIT_URL = '//rest/api/stations/canEdit/station/{internal_id}'
+STATION_UPDATE_URL = '//rest/api/stations/station-put/{internal_id}'
 WIGOSID_SEARCH_URL = '//rest/api/stations/approvedStations/wigosIds?q={wigosid}'
 STATION_SEARCH_URL = '//rest/api/search/station?stationClass={stationClass}'
 STATION_DETAILS_URL = '//rest/api/stations/station/{internal_id}/stationReport'
 STATION_OSERVATIONS_GROUPING_URL = '//rest/api/stations/observation/grouping/{internal_id}'
 DEPLOYMENT_URL = '//rest/api/stations/deployments/{observation_id}'
+STATION_OBSERVATIONS_URL = '//rest/api/stations/stationObservations/{internal_id}'
+STATION_CREATION_URL = '//rest/api/stations/station'
 
 OSCAR_SEARCH_URL = '//rest/api/search/station'
 
-logging.basicConfig(level=logging.INFO)
+QLACK_TOKEN_NAME = "X-Qlack-Fuse-IDM-Token-GO"
+
+#logging.basicConfig(level=logging.INFO)
+log = logging.getLogger(__name__)
+
 
 class OscarClient(object):
 
     def __init__(self,**kwargs):
         self.oscar_url = kwargs.get('oscarurl')
+        self.session = requests.Session()
 
-    def oscarSearch(params):
+    def oscarSearch(self,params={}):
        oscar_search_url = self.oscar_url + OSCAR_SEARCH_URL
-       rsp = requests.get( oscar_search_url , params=params )
+       log.info("searching for {} at {}".format(params,oscar_search_url))
+       rsp = self.session.get( oscar_search_url , params=params )
        
        if rsp.status_code == 200:
           myjson={}
@@ -38,12 +48,35 @@ class OscarClient(object):
        
     def getInternalIDfromWigosId(self,wigosid):
         wigosid_search_url = self.oscar_url + WIGOSID_SEARCH_URL
-        rsp=requests.get( wigosid_search_url.format(wigosid=wigosid) )
+        rsp=self.session.get( wigosid_search_url.format(wigosid=wigosid) )
         stations = json.loads(rsp.content)
         internal_id = stations[0]["id"]
         return internal_id
-        
+     
 
+    def createStation(self,json_data,cookies,qlack_token):
+        headers = { QLACK_TOKEN_NAME:"{"+qlack_token+"}", }           
+     
+        station_creation_url = (self.oscar_url + STATION_CREATION_URL) 
+        logging.debug("creating new station at {} with header: {} cookies: {} and data: {}".format(station_creation_url,headers,cookies,json_data))
+        rsp=self.session.post( station_creation_url , json=json_data , headers=headers , cookies=cookies )
+        
+        if rsp.status_code == 200:
+            return 200, int(rsp.content)
+        if rsp.status_code == 400:
+            return 400, json.loads( rsp.content )
+        else:
+            return 500, "server processing error"
+
+    def updateStation(self,internal_id,json_data,cookies,qlack_token):    
+        
+        headers = { QLACK_TOKEN_NAME:"{"+qlack_token+"}", }           
+     
+        station_update_url = (self.oscar_url + STATION_UPDATE_URL).format(internal_id=internal_id) 
+        logging.debug("updating station details of {} with header: {} cookies: {} and data: {}".format(station_update_url,headers,cookies,json_data))
+        rsp=self.session.post( station_update_url , json=json_data , headers=headers , cookies=cookies )
+        
+        return rsp.status_code == 204
         
     def getFullStationJson(self,internal_id, **kwargs ):
         
@@ -53,9 +86,18 @@ class OscarClient(object):
             validObservations = kwargs['observations']
             logging.debug("limiting observations to {}".format(validObservations))
 
+        level = 0
+        if 'level' in kwargs:
+            if kwargs["level"] == 'basic':
+                level = 0
+            if kwargs["level"] == 'observations':
+                level = 1
+            if kwargs["level"] == 'deployments':
+                level = 2
+            
         station_details_url = self.oscar_url + STATION_DETAILS_URL
         logging.debug("getting station details for {} from {}".format(internal_id,station_details_url))
-        rsp=requests.get( station_details_url.format(internal_id=internal_id) )
+        rsp=self.session.get( station_details_url.format(internal_id=internal_id) )
         
         if not rsp.status_code == 200:
             logging.debug("station {} not found".format(internal_id))
@@ -63,36 +105,30 @@ class OscarClient(object):
             
         station_info = json.loads(rsp.content)
 
-        if not 'basicOnly' in kwargs:
+        if level > 0:
             logging.info("getting station observation groups for {}".format(internal_id))
-            station_observations_grouping_url = self.oscar_url +  STATION_OSERVATIONS_GROUPING_URL
-            rsp=requests.get( station_observations_grouping_url.format(internal_id=internal_id) )
-            observation_groups = json.loads(rsp.content)
+            #station_observations_grouping_url = self.oscar_url +  STATION_OSERVATIONS_GROUPING_URL
+            station_observations_url = (self.oscar_url + STATION_OBSERVATIONS_URL).format(internal_id=internal_id)
+            rsp=self.session.get( station_observations_url )
+            observations = json.loads(rsp.content)
 
-            observations = []
+            station_info["observations"] = observations
 
-            # iterate over observations and retrieve schedules
-            for observationgroup in observation_groups:
-                for observation in observationgroup['observationTitle']:
-                    observation_id = int(observation['observationId'])
-                    variable_id = int(observation['observAccordionId'].split('_')[0])
-                    observation['variable_id'] = variable_id
+            if level > 1:
+                
+                for observation in observations: 
+                    observation_id = int(observation['id'])
                     
-                    if filterObs and not variable_id in validObservations:
-                        logging.debug("filtering out observation {} since not in {}".format(variable_id,validObservations))
-                        continue
-
                     logging.info("getting deployment {}".format(observation_id))
-                    deployment_url = self.oscar_url + DEPLOYMENT_URL
-                    rsp = requests.get( deployment_url.format(observation_id=observation_id))
-                    deployment = json.loads(rsp.content)
+                    deployment_url = (self.oscar_url + DEPLOYMENT_URL).format(observation_id=observation_id)
+                    rsp = self.session.get( deployment_url )
+                    
+                    deployments = []
+                    if rsp.status_code == 200:
+                        deployments = json.loads(rsp.content)
+                    
+                    observation['deployments'] = deployments
 
-                    observation['deployments'] = deployment
-
-                    observations.append(observation)
-
-        if not 'basicOnly' in kwargs:
-            station_info['observations'] = observations
         
         if not 'dateEstablished' in station_info:
             station_info["dateEstablished"] = None

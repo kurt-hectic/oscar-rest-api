@@ -11,6 +11,8 @@ log = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)            
 
 QLACK_TOKEN_NAME = "X-Qlack-Fuse-IDM-Token-GO"
+USER_DETAILS_URL = "//rest/api/security-proxy/user-details"
+LOGOUT_URL = "//auth?logout"
 
 class OscarSaml(object):
     
@@ -100,15 +102,32 @@ class OscarSaml(object):
         [params,actionurl] = self.__parseFormInputs(html_doc,url)  
 
         return [params,actionurl]
+
+    def performLogout(self,cookies,qlack_token):
+
+        log.info("logging out")
+    
+        headers = {'Content-type':'application/json;charset=utf-8'}           
+        headers = {'Accept': 'application/json' , }
+        headers[QLACK_TOKEN_NAME]  =  "{"+qlack_token+"}" 
+        r = requests.get(self.oscar_url+LOGOUT_URL , headers=headers ,  cookies=cookies )
+        
+        log.info("response {}".format(r))
+
+
+        if r.status_code == 200:
+            return True
+        else:
+            return False
+        
         
     def getUserCredentials(self,cookies,qlack_token):
         
-        headers = {'Content-type':'application/json;charset=utf-8'}
-            
+        headers = {'Content-type':'application/json;charset=utf-8'}           
         headers = {'Accept': 'application/json' , }
-        headers["X-Qlack-Fuse-IDM-Token-GO"]  =  "{"+qlack_token+"}" 
+        headers[QLACK_TOKEN_NAME]  =  "{"+qlack_token+"}" 
         
-        r = requests.get(self.oscar_url+"//rest/api/security-proxy/user-details" , headers=headers ,  cookies=cookies )
+        r = requests.get(self.oscar_url+USER_DETAILS_URL , headers=headers ,  cookies=cookies )
 
         if r.status_code == 200:
             login_data = json.loads(r.content)
@@ -179,10 +198,10 @@ class OscarSaml(object):
             
             if username_token == username_data:
                 ret = {'token' : qlack_token , 'cookies' : oscar_cookies }
-                log.info("sucesfully logged on {}, session info {}".format(username_token,ret))
+                log.debug("sucesfully logged on {}, session info {}".format(username_token,ret))
                 return ret
             else:
-                log.info(" logged for {} {} unsucessfull".format(username_token,username_data))
+                log.debug(" logged for {} {} unsucessfull".format(username_token,username_data))
                 return False
                 
         except Exception as e:
