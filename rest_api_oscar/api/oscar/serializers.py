@@ -52,7 +52,6 @@ url = api.model('URL',{
     'dataUrl' : fields.String(required=True,description="The URL")
 })
 
-
 instrument_status = api.model('InstrumentStatus', {
     "statusName": fields.String(readOnly=True,description="the status, as String value"),
     "sinceDate": fields.Date(required=True,description="Date from"),
@@ -64,7 +63,6 @@ instrument_catalogue = api.model('InstrumentCatalogue',{
     "model" : fields.String(description="model of instrument"),
     "manufacturer" : fields.String(description="Manufacturer")    
 })
-
 
 instrument = api.model('Instrument',{
     "id" : fields.Integer(readOnly=True, description='The unique identifier of the instrument'),
@@ -136,7 +134,7 @@ data_generation = api.model('DataGeneration',{
     "processing" : fields.Nested(processing)
 })
 
-deployment = api.model('Observation', {
+deployment = api.model('Deployment', {
     'id': fields.Integer(readOnly=True, description='The unique identifier of a description'),
     'lastModifiedBy' : fields.String(readOnly=True,description="last modified by"),
     'sourceName' : fields.String(required=True,description="The source of the observation"),
@@ -162,8 +160,7 @@ observation = api.model('Observation' ,{
     'geometryName': fields.String(required=True, description="geometry name"),
     'lastModifiedOn' : fields.Date(description="last modification date/time"),
     'programs' : fields.List(fields.Nested(program)),
-    'deployments' : fields.List(fields.Nested(deployment)),
-    
+    'deployments' : fields.List(fields.Nested(deployment)),    
 })
 
 station = api.model('Oscar Station', {
