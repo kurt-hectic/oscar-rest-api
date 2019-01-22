@@ -53,7 +53,7 @@ def initialize_app(flask_app):
     # populate codelists 
     URL = flask_app.config['OSCAR_URL'] + '//rest/api/referenceData/list/{type}'
     codelists = {}
-    for cl in ["StationTypeRef","WmoRaRef","TerritoryRef","TimezoneRef","ObservationGeometryRef","GeopositionRef"]:
+    for cl in ["StationTypeRef","WmoRaRef","TerritoryRef","TimezoneRef","ObservationGeometryRef","GeopositionRef"]: #TODO: typeOfReferenceSurfaceName,sourceName, declaredStatusName, calculatedStatusName, dataCenterName, measurementLeaderName,representativenessName,dataCommunicationMethodName,organizationName,exposureName, dataLevelName,dataPolicyName, variableUnitName, dataFormatName, referenceTimeSourceName, qualityFlagSystemName, traceabilityName, aggregationIntervalTimestampName, ,sampleTreatmentName, ,,temporalSamplingIntervalUnitName, methodName,uncertaintyEvaluationProcedureName, ,,samplingStrategyName,samplingTimePeriodUnitName, , ,,samplingProcedureName,weekday,month, statusName , instrument
         url = (URL).format(type=cl)
         codelists[cl] = tokenutils.read_reference_codelist(url)
         

@@ -130,7 +130,7 @@ class StationItem(Resource):
         mock_file = os.path.normpath(os.path.join(os.path.dirname(__file__), '../../../../tmp/station.json'))
         with open(mock_file) as f:
             mock_station_data = json.load(f)
-            mock_station_data["descriptions"][0]["description"] += station_data["description"]
+            mock_station_data["descriptions"][0]["description"] += station_data["descriptions"][0]["description"]
         
         station_data = mock_station_data
         
